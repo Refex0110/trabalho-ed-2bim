@@ -1,0 +1,16 @@
+Tipo, TempoConclusao, NomeTarefa, Responsavel, DataInicio
+Crítico,10,Corrigir bug de login,João Silva,2023-10-26
+Importante,5,Implementar funcionalidade de carrinho,Maria Oliveira,2023-10-27
+Melhoria,2,Refatorar código de autenticação,Ana Santos,2023-10-28
+Crítico,15,Corrigir falha de segurança,Pedro Souza,2023-10-29
+Importante,8,Testar integração com API de pagamento,Carla Rodrigues,2023-10-30
+Melhoria,3,Otimizar desempenho da página inicial,Lucas Pereira,2023-10-31
+Crítico,12,Corrigir erro de banco de dados,Mariana Costa,2023-11-01
+Importante,7,Revisar código da funcionalidade de busca,Bruno Gomes,2023-11-02
+Melhoria,4,Documentar API de produtos,Isabela Ribeiro,2023-11-03
+Crítico,20,Corrigir problema de infraestrutura,Rafael Martins,2023-11-04
+Importante,9,Implementar funcionalidade de favoritos,Juliana Almeida,2023-11-05
+Melhoria,5,Otimizar consultas ao banco de dados,Gustavo Barbosa,2023-11-06
+Crítico,18,Corrigir bug de renderização,Beatriz Castro,2023-11-07
+Importante,6,Testar funcionalidade de checkout,Leonardo Dias,2023-11-08
+Melhoria,2,Atualizar documentação de instalação,Camila Ferreira,2023-11-09
