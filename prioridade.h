@@ -1,44 +1,76 @@
+
 struct tpTarefa{
-	int prioridade;
+	int tipo;
 	int tempo;
-	char nome_tarefa [50];
-	tpPont *prox, *ant;
-};
-struct tpDesc{
-	tpDev *inicio, *fim;
+	int tempo_chegada;
+	char nome_tarefa[50];
+	char responsavel[50];
+	char data[11];
+	tpTarefa *prox, *ant;
 };
 struct tpDev{
-	char nome[30];
+	int id;
+	int qtdTarefa[4];
+	int qtdTempo;
+	int ocupado;
 	tpTarefa *inicio, *fim;
 	tpDev *prox;
 };	
-tpTarefa *node(int prioridade, int tempo,char tarefa[50]){
-	tpTarefa *node = new tpTarefa;
-	node->prioridade = prioridade;
-	node->tempo = tempo;
-	node->prox = node->ant = NULL;
-	strcpy(node->nome_tarefa, tarefa);
-	return node;
+struct tpDesc{
+	int qtdDev, tarefasConcluidas, tarefas;
+	tpDev *inicio, *fim;
+};
+tpTarefa *criaTarefa(tpTicket ticket, int chegada){
+	tpTarefa *tarefa = new tpTarefa;
+	strcpy(tarefa->tipo,ticket.tipo);
+	tarefa->tempo = ticket.tempo;
+	tarefa->tempo_chegada = chegada;
+	strcpy(tarefa->responsavel, ticket.responsavel);
+	strcpy(tarefa->data, ticket.data);
+	strcpy(tarefa->nome_tarefa, ticket.tarefa);
+	tarefa->prox = tarefa->ant = NULL;
+	return tarefa;
 }
-tpDev *criaDev(char nome[30]){
+tpDev *criaDev(int id){
 	tpDev *dev = new tpDev;
+	dev->id = id;
 	dev->prox = NULL;
-	strcpy(dev->nome, nome);
+	dev->qtdTempo = dev->qtdTarefa = 0;
+	dev->ocupado = 0;
 	return dev;
 }
-void inicilizar(tpDecs &desc){
+void inicializar(tpDesc &desc, int qtdDevs){
+	desc.qtdDev = qtdDevs;
 	desc.inicio  = desc.fim = NULL;
 }
-char vazia(tpDesc desc){
+char devsVazio(tpDesc desc){
 	return desc.inicio == NULL;
 }
-void inserirDev(tpDesc &desc,char nome[30]){
-	tpDev *dev = criaDev(nome);
-	if(vazia(desc))
+void inserirDev(tpDesc &desc){
+	tpDev *dev = criaDev(desc.qtdDev+1);
+	if(devsVazio(desc))
 		desc.inicio = desc.fim = dev;
 	else{
 		desc.fim->prox = dev;
 		desc.fim = dev;
 	}
 }
-void qtdprioridade(tpDesc desc, )
+
+void inserirTarefa(tpTicket ticket, tpDesc &desc,){
+	tpDev *dev = new tpDev;
+	dev = desc.inicio;
+	//verificar se tem tarefa
+	while(!dev->ocupado && dev != NULL)
+	{
+		dev->inicio = dev->fim = criaTarefa(ticket,);
+		dev = dev->prox;
+	}
+	//contar tempo e quantidade de tarefas
+	while(dev->qtdTempo > dev->prox.qtdTempo){
+		if(dev->qtdTarefa[4] > dev->prox.qtdTarefa)
+			dev
+		
+	}
+}
+
+
