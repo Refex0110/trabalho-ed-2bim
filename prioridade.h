@@ -47,7 +47,7 @@ char devsVazio(tpDesc desc){
 	return desc.inicio == NULL;
 }
 void inserirDev(tpDesc &desc){
-	tpDev *dev = criaDev(desc.qtdDev+1);
+		tpDev *dev = criaDev(desc.qtdDev+1);
 	if(devsVazio(desc))
 		desc.inicio = desc.fim = dev;
 	else{
@@ -57,9 +57,19 @@ void inserirDev(tpDesc &desc){
 }
 
 void inserirTarefa(tpTicket ticket, tpDesc &desc,){
-	tpDev *dev = new tpDev;
-	dev = desc.inicio;
+	tpDev *devInicio = new tpDev;
+	tpDev *devFim = new tpDev;
+	devInicio = desc.inicio;
+	devFim = desc.fim;
 	//verificar se tem tarefa
+	if(!devInicio->ocupado){
+		
+		devInicio->inicio = devInicio->fim = criaTarefa(ticket,);
+		devInicio->qtdTarefa[4]++;
+		switch()
+		desc.qtdDev++;
+		dev = NULL;
+	}
 	while(!dev->ocupado && dev != NULL)
 	{
 		dev->inicio = dev->fim = criaTarefa(ticket,);
