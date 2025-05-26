@@ -107,7 +107,6 @@ void inserirTarefa(tpTicket ticket, tpDesc &desc, int chegada) {
             }
             atual = atual->prox;
         }
-
         // Inserção de acordo com a prioridade
         if (devInicio->tarefas.inicio == NULL) {
             devInicio->tarefas.inicio = devInicio->tarefas.fim = tarefa;
@@ -126,6 +125,7 @@ void inserirTarefa(tpTicket ticket, tpDesc &desc, int chegada) {
                     devInicio->tarefas.inicio->ant = tarefa;
                     devInicio->tarefas.inicio = tarefa;
                 } else {
+                	
                     // Busca a posição correta para inserir
                     while (tarefaAtual != NULL && tarefa->tipo <= tarefaAtual->tipo) {
                         tarefaAtual = tarefaAtual->prox;
