@@ -83,3 +83,4 @@ void simulacao(){
 	else
 		printf("\nArquivo nao encontrado");
 }
+
