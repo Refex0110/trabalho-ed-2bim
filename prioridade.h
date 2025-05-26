@@ -120,7 +120,7 @@ void inserirTarefa(tpTicket ticket, tpDesc &desc, int chegada) {
                 tarefaAtual = devInicio->tarefas.inicio;
                 
                 // Se for alta prioridade e a primeira for média, insere no início
-                if (tarefa->tipo == 3 && tarefaAtual->tipo == 2) {
+                if (tarefa->tipo < tarefaAtual->tipo && devInicio->tarefas.inicio ) {
                     tarefa->prox = devInicio->tarefas.inicio;
                     devInicio->tarefas.inicio->ant = tarefa;
                     devInicio->tarefas.inicio = tarefa;
