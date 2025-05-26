@@ -1,4 +1,16 @@
-
+struct tpDesc{
+	int qtdDev;
+	tpDev *inicio, *fim;
+};
+struct tpDev{
+	int id;
+	descTarefa tarefas;
+	tpDev *prox;
+};
+struct descTarefa{
+	int qtdTarefa, qtdTempo;
+	tpTarefa *inicio, *fim;
+};
 struct tpTarefa{
 	int tipo;
 	int tempo;
@@ -8,21 +20,10 @@ struct tpTarefa{
 	char data[11];
 	tpTarefa *prox, *ant;
 };
-struct tpDev{
-	int id;
-	int qtdTarefa[4];
-	int qtdTempo;
-	int ocupado;
-	tpTarefa *inicio, *fim;
-	tpDev *prox;
-};	
-struct tpDesc{
-	int qtdDev, tarefasConcluidas, tarefas;
-	tpDev *inicio, *fim;
-};
+verificaPrioridade(char prioridade[10]);
 tpTarefa *criaTarefa(tpTicket ticket, int chegada){
 	tpTarefa *tarefa = new tpTarefa;
-	strcpy(tarefa->tipo,ticket.tipo);
+	tarefa->tipo = verificaPrioridade(ticket.tipo);
 	tarefa->tempo = ticket.tempo;
 	tarefa->tempo_chegada = chegada;
 	strcpy(tarefa->responsavel, ticket.responsavel);
@@ -39,48 +40,109 @@ tpDev *criaDev(int id){
 	dev->ocupado = 0;
 	return dev;
 }
-void inicializar(tpDesc &desc, int qtdDevs){
+void inicializarDesc(tpDesc &desc, int qtdDevs){
 	desc.qtdDev = qtdDevs;
 	desc.inicio  = desc.fim = NULL;
+}
+void inicializarTarefa(tpDev &dev){
+	descTarefa.inicio = descTarefa.fim = NULL;
+	descTarefa.qtdTarefa = descTarefa.qtdTempo =  0;
 }
 char devsVazio(tpDesc desc){
 	return desc.inicio == NULL;
 }
 void inserirDev(tpDesc &desc){
-		tpDev *dev = criaDev(desc.qtdDev+1);
-	if(devsVazio(desc))
+	tpDev *dev = criaDev(desc.qtdDev+1);
+	inicializarTarefa(dev);
+	if(devsVazio(desc)){
 		desc.inicio = desc.fim = dev;
+	}
 	else{
 		desc.fim->prox = dev;
-		desc.fim = dev;
+		desc.fim = dev;	
 	}
 }
-
+int verificaPrioridade(char prioridade[10]){
+	if(stricmp(prioridade,"Importante") == 0)
+		return 3;
+	else
+		if(stricmp(prioridade,"Melhoria") == 0))
+			return 2;
+		else
+			return 1;
+}
 void inserirTarefa(tpTicket ticket, tpDesc &desc,){
 	tpDev *devInicio = new tpDev;
-	tpDev *devFim = new tpDev;
 	devInicio = desc.inicio;
-	devFim = desc.fim;
-	//verificar se tem tarefa
+	tpDev *atual = new tpDev;
+	tpTarefa tarefa = criaTarefa(ticket, );
+	tpTarefa *tarefaAtual;
+	//verifica até achar um decoupado
+	while(!devInicio->ocupado && devInicio != NULL)
+		devInicio = dev->prox;
+	//se encontrou um ocupado, recebe tarefa
 	if(!devInicio->ocupado){
-		
-		devInicio->inicio = devInicio->fim = criaTarefa(ticket,);
+		devInicio->inicio = devInicio->fim = tarefa;
 		devInicio->qtdTarefa[4]++;
-		switch()
-		desc.qtdDev++;
-		dev = NULL;
+		devInicio->qtdTarefa[5]++;
+		devInicio->ocupado = 1;
+		devInicio->qtdTempo+= tarefa.tempo;
+		desc.qtdDev--;
 	}
-	while(!dev->ocupado && dev != NULL)
-	{
-		dev->inicio = dev->fim = criaTarefa(ticket,);
-		dev = dev->prox;
-	}
-	//contar tempo e quantidade de tarefas
-	while(dev->qtdTempo > dev->prox.qtdTempo){
-		if(dev->qtdTarefa[4] > dev->prox.qtdTarefa)
-			dev
-		
+	// Não encontrou desocupado, retorna para encontrar menor tempo
+	else{
+		devInicio = desc.inicio;
+		atual = devInicio->prox;
+		//buscar menor tempo e quantidade de tarefas
+		while(atual != NULL){
+			if(devInicio->qtdTempo > atual->qtdTempo)
+			{
+				devInicio = atual;
+				atual = atual->prox;
+			}
+			else
+				if(devInicio->qtdTempo > atual->prox->qtdTempo &&
+				atual->prox->prox != NULL)
+				{
+					devInicio = atual;
+					atual = atual->prox;
+				}
+		}
+		//inserção de acordo com a prioridade
+		tarefaAtual = devInicio->inicio;
+		//por ser menor prioridade e chegar depois, entra no fim
+		if(tarefa->tipo == 1)
+		{
+			devInicio->fim->prox = tarefa;
+			tarefa->ant = devInicio->fim;
+			devInicio->fim = tarefa;
+		}
+		else{
+			if(tarefa->tipo == 3 && devInicio->inicio->tipo == 2)
+			{
+				tarefa->prox = devInicio->inicio;
+				devInicio->inicio->ant = tarefa;			
+				devInicio->inicio = tarefa;
+			}
+			else
+			{
+				//busca o primeiro de menor prioridade
+				while(tarefa->tipo < tarefaAtual->tipo)
+					tarefaAtual = tarefaAtual->prox;
+				//quando encontrar, coloca tarefa antes
+				if(tarefaAtual->ant->tipo > tarefa->tipo){
+					tarefa->prox = tarefaAtual;
+					tarefa->ant-> = tarefaAtual->ant;
+					tarefaAtual->ant->prox = tarefaAtual->ant = tarefa;
+				}
+			}
+		}
+					
+		devInicio->fim = tarefa;
+		devInicio->qtdTarefa[4]++;
+		devInicio->qtdTarefa[5]++;
+		desc.qtdDev--;
+		//dev recebe NULL e finaliza função
+		devInicio = NULL;
 	}
 }
-
-
