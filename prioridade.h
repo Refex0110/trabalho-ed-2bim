@@ -80,9 +80,9 @@ int verificaPrioridade(char prioridade[10]) {
 
 void inserirTarefa(tpTicket ticket, tpDesc &desc, int chegada) {
     tpDev *devInicio = desc.inicio;
-    tpDev *atual;
+    tpDev *atual = NULL;
     tpTarefa *tarefa = criaTarefa(ticket, chegada);
-    tpTarefa *tarefaAtual;
+    tpTarefa *tarefaAtual = NULL;
 
     // Verifica até achar um desocupado
     while (devInicio != NULL && devInicio->tarefas.qtdTarefa > 0) {
@@ -119,13 +119,12 @@ void inserirTarefa(tpTicket ticket, tpDesc &desc, int chegada) {
             } else {
                 tarefaAtual = devInicio->tarefas.inicio;
                 
-                // Se for alta prioridade e a primeira for média, insere no início
-                if (tarefa->tipo < tarefaAtual->tipo && devInicio->tarefas.inicio ) {
-                    tarefa->prox = devInicio->tarefas.inicio;
-                    devInicio->tarefas.inicio->ant = tarefa;
-                    devInicio->tarefas.inicio = tarefa;
+                // Se for alta prioridade e a primeira for média, insere depois 
+                if (tarefa->tipo > tarefaAtual->tipo) {
+                    tarefa->prox = tarefaAtual->prox;
+                    tarefa->prox->ant = tarefa;
+                    tarefa->ant = tarefaAtual;
                 } else {
-                	
                     // Busca a posição correta para inserir
                     while (tarefaAtual != NULL && tarefa->tipo <= tarefaAtual->tipo) {
                         tarefaAtual = tarefaAtual->prox;
@@ -154,4 +153,72 @@ void inserirTarefa(tpTicket ticket, tpDesc &desc, int chegada) {
         devInicio->tarefas.qtdTarefa++;
         devInicio->tarefas.qtdTempo += tarefa->tempo;
     }
+}
+void removerDev(tpDesc &desc){
+	if(devsVazio(desc))
+		printf("Nao há desenvolvedores")
+	else
+	{
+		tpDev *ant = NULL;
+		tpDev *atual = desc.inicio;
+		int idRemover;
+		for(atual; atual != NULL; atual = atual->prox)
+			printf("ID: %d\nQuantidade Tarefas: %d\n",
+			atual->id,atual->tarefas.qtdTarefa);
+		printf("Informe o ID do dev que deseja remover: ");
+		scanf("%d", &idRemover);
+		clrscr();
+		if(idRemover == 0){
+			printf("\nID invalido!\n");	
+			getch();
+		}	
+		else{
+			//retorna o ponteiro depois de printar as opções
+			atual = desc.inicio;
+			//busca o dev com o devido ID
+			while (atual != NULL && atual->id != idRemover){
+				ant = atual;
+				atual = atual->prox;
+			}
+			if(atual == NULL)
+				printf("Dev nao encontrado");
+			else{
+				//redistribui tarefas
+				if(atual->tarefas.qtdTarefa > 0)
+					tpTarefa *tarefa = atual->tarefas.inicio;
+				while(tarefa != NULL){
+					tpTarefa *prox = tarefa->prox;
+					//encontra dev com menor carga
+					tpDev *menor = desc.inicio;
+					tpDev *temp = desc.inicio;
+					
+					while(temp != NULL){
+						if(temp != atual  && temp->tarefas.qtdTempo < menor->tarefas.qtdTempo)
+							menor = temp;
+						temp = temp->prox;
+					}
+					if(menor->tarefas.inicio == NULL){
+						menor->tarefas.inicio = menor->tarefas.fim = tarefa;
+						tarefa->prox = tarefa->ant =  NULL;
+					}
+					else{
+						tpTarefa *t = menor->tarefas.inicio;
+						tpTarefa *antT = NULL;
+						while(t != NULL && t->tipo >= tarefa->tipo){
+							antT = t;
+							t = t->prox;
+						}
+						if(antT == NULL){
+							//insere depois para não sobrepor tarefas já sendo executadas
+							if(t->prox NULL){
+								t->prox = menor->
+							}
+								
+						}
+					}
+				}
+			}
+		}
+		
+	}
 }
