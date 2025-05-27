@@ -44,7 +44,7 @@ void inserirDev(tpDesc &desc, int &qtdDev){
 		inserirDev(desc)
 	qtdDev -= qtdDesejada;
 }
-void simulacao(){
+void simulacao(void){
 	int qtdDev, devs, tempoSimulacao;
 	tpDesc desc; 
 	tpTicket ticket;
@@ -69,7 +69,7 @@ void simulacao(){
 			scanf("%d", &qtdDev);
 		}
 		inicializar(desc, qtdDev);
-		//elimina a primeira linha com  nomenclatura
+		//elimina a primeira linha com nomenclatura
 		fgets(linha, sizeof(linha), arquivo);
 		while(tempoSimulacao > 0){
 			menu();

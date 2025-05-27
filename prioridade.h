@@ -108,9 +108,7 @@ void inserirTarefa(tpTicket ticket, tpDesc &desc, int chegada) {
             atual = atual->prox;
         }
         // Inserção de acordo com a prioridade
-        if (devInicio->tarefas.inicio == NULL) {
-            devInicio->tarefas.inicio = devInicio->tarefas.fim = tarefa;
-        } else {
+        
             // Por ser menor prioridade, entra no fim
             if (tarefa->tipo == 1) {
                 devInicio->tarefas.fim->prox = tarefa;
@@ -119,10 +117,10 @@ void inserirTarefa(tpTicket ticket, tpDesc &desc, int chegada) {
             } else {
                 tarefaAtual = devInicio->tarefas.inicio;
                 
-                // Se for alta prioridade e a primeira for média, insere depois 
+                // Se a primeira tiver menor prioridade, insere no começo 
                 if (tarefa->tipo > tarefaAtual->tipo) {
-                    tarefa->prox = tarefaAtual->prox;
-                    tarefa->prox->ant = tarefa;
+                    tarefa->prox = tarefaAtual;
+                    tarefa->prox->ant = tarefaAtual;;
                     tarefa->ant = tarefaAtual;
                 } else {
                     // Busca a posição correta para inserir
@@ -152,6 +150,7 @@ void inserirTarefa(tpTicket ticket, tpDesc &desc, int chegada) {
         
         devInicio->tarefas.qtdTarefa++;
         devInicio->tarefas.qtdTempo += tarefa->tempo;
+    	}
     }
 }
 void removerDev(tpDesc &desc){
@@ -209,12 +208,15 @@ void removerDev(tpDesc &desc){
 							t = t->prox;
 						}
 						if(antT == NULL){
-							//insere depois para não sobrepor tarefas já sendo executadas
-							if(t->prox NULL){
-								t->prox = menor->
-							}
-								
+							//insere no inicio e sobrepõe a de menor prioridade	
+							tarefa->prox = menor->tarefas.inicio
+							menor->tarefas.inicio->ant = tarefa;
+							menor->tarefas.inicio = tarefa;
+							tarefa->ant = NULL;
 						}
+						
+								
+					}
 					}
 				}
 			}
