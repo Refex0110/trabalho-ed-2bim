@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 struct tpTicket{
 	char 
 	tipo[10],
@@ -81,7 +82,8 @@ void inserirDev(tpDesc &desc) {
         desc.fim->prox = dev;
         desc.fim = dev;
     }
-    desc.qtdID++;
+    desc.qtdID+=1;
+    desc.qtdDev+=1;
 }
 
 tpDev *devMenorCarga(tpDesc &desc) {
@@ -241,4 +243,16 @@ void liberarDevs(tpDesc &desc){
 		}
 	}
 	
+}
+void exibeTarefas(tpDesc &desc){
+	tpDev *dev = desc.inicio;
+	tpTarefa *tarefas = dev->tarefas.inicio;
+	while(dev !=NULL){
+		while(tarefas != NULL){
+			printf("ID %d | Tempo %d | Tarefas %d \n", dev->id, dev->tarefas.qtdTempo,dev->tarefas.qtdTarefa);
+			tarefas = tarefas->prox;
+		}
+		dev = dev->prox;
+		tarefas = dev->tarefas.inicio;
+	}
 }
