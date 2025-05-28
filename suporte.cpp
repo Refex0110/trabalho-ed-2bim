@@ -1,86 +1,206 @@
- #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <conio2.h>
 #include <conio.h>
+#include <ctype.h>
+#include <time.h>
+#include <Windows.h>
 #include "prioridade.h"
-struct tpTicket{
-	char 
-	tipo[10],
-	tarefa[50],
-	responsavel[30],
-	data[10];
-	int tempo;
-};
-ticket criaTicket(FILE *arquivo){
+
+void menuConfiguracao(int qtdDev, int tempo);
+void simulacao(int qtdDev, int tempo);
+tpTicket criaTicket(FILE *arquivo){
 	tpTicket ticket;
-	fscanf(arquivo,"%10[^;];%d;%50[^;];%30[^;];%10[^;]\n",tarefa.tipo,tarefa.tempo,
-	tarefa.tarefa,tarefa.responsavel, tarefa.data);
+	fscanf(arquivo,"%10[^;];%d;%50[^;];%30[^;];%10[^;]\n",ticket.tipo,&ticket.tempo,
+	ticket.tarefa,ticket.responsavel, ticket.data);
 	return ticket;
 }
-
-char menu(){
-	char opcao;
+void enviaTarefa(tpDesc &desc, FILE *arquivo, int tempo){
+	printf("Chegou uma nova tarefa!\n");
+	if(!feof(arquivo)){
+		tpTicket ticket = criaTicket(arquivo);
+		inserirTarefa(ticket, desc, tempo);
+	}
+}
+void menuConfiguracao(int qtdDev, int tempo) {
+    clrscr();
+    printf("###### CONFIGURACAO DA SIMULACAO ######\n\n");
+    printf("[A] Quantidade de Devs: ");
+    if (qtdDev == -1) 
+		printf(" (Nao definido)\n"); 
+	else 
+		printf(" %d\n", qtdDev);
+		
+    printf("[B] Tempo de Simulacao: ");
+    if (tempo == -1) 
+		printf("(Nao definido)\n"); 
+	else 
+		printf(" %d segundos\n", tempo);
+    printf("\n-----------------------------------------\n");
+    printf("[ENTER] Comecar Simulacao\n[ESC]   Sair\n\n");
+    printf("Opcao: ");
+}
+char menuPausa() {
+    clrscr();
+    printf("--- SIMULACAO PAUSADA ---\n\n");
+    printf("[A] Adicionar um Desenvolvedor\n");
+    printf("[B] Remover um Desenvolvedor\n");
+    printf("[C] FINALIZAR Simulacao Agora\n\n");
+    printf("[ESC] Retomar Simulacao\n");
+    printf("\nOpcao: ");
+    return toupper(getch());
+}
+int main(void) {
+    int qtdDev = -1;
+    int tempoSimulacao = -1;
+    char opcao;
+    int configuracaoConcluida = 0; 
+	//funciona enquanto 0
+    while (configuracaoConcluida == 0) { 
+        menuConfiguracao(qtdDev, tempoSimulacao);
+        opcao = toupper(getch());
+        switch (opcao) {
+            case 'A':
+                do {
+                    clrscr();
+                    printf("--- CONFIGURAR DESENVOLVEDORES ---\n\nDigite a quantidade inicial de DEVs: ");
+                    scanf("%d", &qtdDev);
+                } while (qtdDev <= 0);
+                break;
+            case 'B':
+                 do {
+					clrscr();
+                    printf("--- CONFIGURAR TEMPO ---\n\nDigite o tempo total da simulacao (segundos): ");
+                    scanf("%d", &tempoSimulacao);
+                } while (tempoSimulacao <= 0);
+                break;
+            case 13: // Enter
+                if (qtdDev > 0 && tempoSimulacao > 0) {
+                    simulacao(qtdDev, tempoSimulacao);
+                    configuracaoConcluida = 1; // fecha o while
+                } 
+				else{
+				 	printf("Nenhum valor pode ser menor ou igual a 0\n"); 
+					getch(); 
+				}
+                break;
+            case 27: // ESC
+                configuracaoConcluida = 1; // fecha o while
+                break;
+        }
+    }
+    printf("\nPrograma finalizado.\n");
+    return 0;
+}
+int gerarIntervalo(int min, int max) {
+    return rand() % (max - min + 1) + min;
+}
+void mensagemIdDev(tpDesc desc){
 	clrscr();
-	do{
-	printf("[A] Inserir Devs\n");
-	printf("[B] Retirar Devs\n");
-	printf("[C]Parar simulacao\n");
-	printf("[ESC] Retomar simulacao\n");
-	}while(opcao != 27);
-	
+	printf("Desenvolvedores em trabalho: \n");
+	for(tpDev *dev = desc.inicio; dev != NULL; dev = dev->prox)
+		printf("ID: %d | Tarefas: %d | Tempo: %d", dev->id, dev->tarefas.qtdTarefa,
+		dev->tarefas.qtdTempo);
+	printf("Digite 0 ou pressione [ESC] para sair");
+	printf("Digite o ID do desenvolvedor que deseja excluir: ");	
 }
-void inserirDev(tpDesc &desc, int &qtdDev){
-	int qtdDesejada;
-	printf("Deseja inserir quantos devs? Disponiveis(%d)", qtdDev);
-	scanf("&d", &qtdDesejada;
-	while(qtdDesejada < 0 || qtdDesejada > qtdDev)
-	{
-		clrscr();
-		printf("Deseja inserir quantos devs? Disponiveis(%d)", qtdDev);	
-		scanf("&d", &qtdDesejada;
-	}
-	for(int i = 0; i < qtdDesejada, i++)
-		inserirDev(desc)
-	qtdDev -= qtdDesejada;
-}
-void simulacao(void){
-	int qtdDev, devs, tempoSimulacao;
-	tpDesc desc; 
-	tpTicket ticket;
-	char linha [1000];
+void simulacao(int qtdDevInicial, int tempoTotal) {
+	tpDesc desc;
 	FILE *arquivo = fopen("tarefas.txt", "r");
-	if(arquivo != NULL)
+	srand(time(NULL));
+    int simulacaoAtiva = 1; //simulacao ativa
+	if(arquivo == NULL){
+		printf("\nArquivo nao encontrado!");
+		getch();
 	}
-		printf("Difite a quantidade de tempo para a simulacao: ");
-		scanf("%d", &tempoSimulacao);
-		while(tempoSimulacao < 0){
-			clrscr();
-			printf("Difite a quantidade de tempo para a simulacao: ");
-			scanf("%d", &tempoSimulacao);
+	else{
+		char linha[1000];
+		fgets(linha, sizeof(linha),arquivo);
+		inicializarDesc(desc,qtdDevInicial);
+		for(int i = 0; i < qtdDevInicial; i++){
+			inserirDev(desc);
 		}
-		printf("Tempo de simulacao: %d", tempoSimulacao);
-		printf("Digite a quantidade de desenvolvedores");
-		scanf("%d", &qtdDev);
-		while(qtdDev < 0){
-			clrscr();
-			printf("Tempo de simulacao: %d", tempoSimulacao);
-			printf("Digite a quantidade de desenvolvedores");
-			scanf("%d", &qtdDev);
-		}
-		inicializar(desc, qtdDev);
-		//elimina a primeira linha com nomenclatura
-		fgets(linha, sizeof(linha), arquivo);
-		while(tempoSimulacao > 0){
-			menu();
+
+		//adicionar tarefa na fila
+		int tempoSimulacaoAtual =  0;
+		int proximaTarefa = gerarIntervalo(2,4);
+		
+		printf("Iniciando simulacao...");
+		Sleep(2000);
+		
+		while(tempoSimulacaoAtual < tempoTotal){
 			do{
-					
-					
+			clrscr();
+			gotoxy(0,0);
+			printf("--- SIMULACAO ---\n");
+			printf("Tempo: %d de %d\n", tempoSimulacaoAtual, tempoTotal);
+			printf("Desenvolvedores ativos: %d\n\n", desc.qtdDev);
+			if(proximaTarefa <= 0){
+				enviaTarefa(desc,arquivo,tempoSimulacaoAtual);
+				proximaTarefa = gerarIntervalo(2,4);
+				printf("Proxima tarefa em: %d segundos", proximaTarefa);
+			}
+			else{
+				printf("Proxima tarefa em: %d segundos", proximaTarefa);
+				proximaTarefa--;
+			}
+			printf("PRESSIONE QUALQUER TECLA PARA PAUSAR\n");
+			Sleep(1000);
+			tempoSimulacaoAtual++;
 			}while(!kbhit());
-	
+			char opcaoPausa = menuPausa();	
+			switch(opcaoPausa){
+				case 'A':
+					inserirDev(desc);
+					printf("Desenvolvedor Adicionado!");
+					getch();
+					break;
+				case 'B':
+					if(!devsVazio(desc)){
+						int id;
+						mensagemIdDev(desc);
+						scanf("%d", &id);
+						if(id != 0 && id != 27){
+							switch(removerDev(desc, id)){
+								case 0:
+									printf("Desenvolvedor com ID %d nao encontrado!\n", id);
+									getch();
+								break;
+								case 1:
+									printf("Desenvolvedor %d removido com sucesso!\n", id);
+									getch();
+								break;
+								case 2:
+									printf("Ultimo desenvolvedor. Adicione um desenvolvedor ou reinicie a simulacao");
+					
+									getch();
+								break;
+								default: printf("Erro desconhecido!");getch(); break;
+							}
+						}
+					}
+					else
+						printf("Nao ha desenvolvedores para remover!");
+					getch();
+					break;
+				case 'C':
+					tempoSimulacaoAtual = tempoTotal;
+					printf("Simulacao finalizada!");
+					getch();
+				break;
+				case 27:
+					break;
+			}
 		}
+	
+		getch();
 	}
-	else
-		printf("\nArquivo nao encontrado");
+	fclose(arquivo);
+	liberarTarefas(desc)
+	
+	getch();
 }
+
 
