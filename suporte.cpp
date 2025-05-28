@@ -149,6 +149,7 @@ void simulacao(int qtdDevInicial, int tempoTotal) {
 			printf("PRESSIONE QUALQUER TECLA PARA PAUSAR\n");
 			Sleep(1000);
 			tempoSimulacaoAtual++;
+			getch();
 			}while(!kbhit());
 			char opcaoPausa = menuPausa();	
 			switch(opcaoPausa){
@@ -198,8 +199,7 @@ void simulacao(int qtdDevInicial, int tempoTotal) {
 		getch();
 	}
 	fclose(arquivo);
-	liberarTarefas(desc)
-	
+	liberarTarefas(desc);
 	getch();
 }
 

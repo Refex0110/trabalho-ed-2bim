@@ -30,7 +30,6 @@ struct tpDesc {
     int qtdDev, qtdID;
     tpDev *inicio, *fim;
 };
-void inicializarTarefa(tpDev &dev);
 tpDev *menorCargaRemover(tpDesc &desc, tpDev *devExcluir);
 void redistribuirTarefa(tpDev *dev, tpTarefa *tarefa);
 int verificaPrioridade(char prioridade[10]) {
@@ -59,7 +58,6 @@ tpDev *criaDev(int id) {
     dev->prox = NULL;
     dev->tarefas.fim = dev->tarefas.fim = NULL; 
     dev->tarefas.qtdTarefa = dev->tarefas.qtdTempo = 0;
-	inicializarTarefa(*dev);
     return dev;
 }
 
@@ -218,10 +216,10 @@ void removerTarefa(descTarefa &tarefas){
 
 }
 void liberarTarefas(tpDesc &desc){
-	tpTarefa *tarefas =dev->tarefas.inicio;
+	tpTarefa *tarefas = desc.inicio->tarefas.inicio;
 	tpDev *dev = desc.inicio;
 	while(dev != NULL){
-		while(!tarefasVazio(desc->inicio.tarefas)){
+		while(!tarefasVazio(desc.inicio->tarefas)){
 			removerTarefa(desc.inicio->tarefas);
 		}
 		dev = dev->prox;
@@ -239,7 +237,7 @@ void liberarDevs(tpDesc &desc){
 			delete dev;
 			desc.inicio = atual;
 			dev = atual;
-			atual = atual->prox 		
+			atual = atual->prox;
 		}
 	}
 	
