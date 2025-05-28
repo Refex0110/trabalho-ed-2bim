@@ -57,6 +57,8 @@ tpDev *criaDev(int id) {
     tpDev *dev = new tpDev;
     dev->id = id;
     dev->prox = NULL;
+    dev->tarefas.fim = dev->tarefas.fim = NULL; 
+    dev->tarefas.qtdTarefa = dev->tarefas.qtdTempo = 0;
 	inicializarTarefa(*dev);
     return dev;
 }
@@ -66,10 +68,7 @@ void inicializarDesc(tpDesc &desc, int qtdDevs) {
     desc.qtdID = 0;
     desc.inicio = desc.fim = NULL;
 }
-void inicializarTarefa(tpDev &dev){
-	dev.tarefas.inicio = dev.tarefas.fim = NULL;
-	dev.tarefas.qtdTarefa = dev.tarefas.qtdTempo =  0;
-}
+
 char devsVazio(tpDesc desc) {
     return desc.inicio == NULL;
 }
