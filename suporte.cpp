@@ -57,6 +57,7 @@ int main(void) {
     char opcao;
     int configuracaoConcluida = 0; 
 	//funciona enquanto 0
+	printf("Integrantes: Pedro Todesco e Rafael Padovan\n");
     while (configuracaoConcluida == 0) { 
         menuConfiguracao(qtdDev, tempoSimulacao);
         opcao = toupper(getch());
